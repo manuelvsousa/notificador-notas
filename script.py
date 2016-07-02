@@ -8,6 +8,11 @@ import hashlib
 from hashlib import md5
 import urllib2
 
+################################################
+FICHEIRO_CONFIG="config.ini"
+FICHEIRO_DATA="teste.txt"
+################################################
+
 def is_up(link):
     return urllib.urlopen(link).getcode() == 200
 
@@ -32,7 +37,7 @@ def ConfigSectionMap(Config,section):
 def get_sourcecode(link):
     response = urllib2.urlopen(link)
     m = hashlib.md5()
-    m.update(response.read().encode('utf-8'))
+    m.update(response.read())
     return m.hexdigest()
 
 def config_init(name):
@@ -75,31 +80,28 @@ def atualizar_cadeira(data,config):
 
 def altera_config(data,config):
     config.set(data["cadeira"], data["ativo"], False)
-    with open('config.ini', 'w') as configfile:
+    with open(FICHEIRO_CONFIG, 'w') as configfile:
         config.write(config)
-
-
-
 
 
 
 def adicionar_cadeira(cadeira,config):
     new={}
     lista=[]
-    new["md5"]=get_sourcecode(ConfigSectionMap(cadeira)['link'])
-    new["link"]=ConfigSectionMap(cadeira)['link']
     new["cadeira"]=cadeira
-    new["sigla"]=ConfigSectionMap(cadeira)['sigla']
-    new["ativo"]=True
+    new["sigla"]=ConfigSectionMap(config,cadeira)['sigla']
+    new["link"]=ConfigSectionMap(config,cadeira)['link']
+    new["ativo"]=1
+    new["md5"]=get_sourcecode(ConfigSectionMap(config,cadeira)['link'])
     return new
 
 
 
 
 if __name__ == "__main__":
-    config = config_init("config.ini")
+    config = config_init(FICHEIRO_CONFIG)
     cadeiras=get_cadeiras(config)
-    data = read_file_lines("teste.txt")
+    data = read_file_lines(FICHEIRO_DATA)
     eliminar=[]
     #eliminar jsons que ja nao existem na config
     for a in range(0,len(data)):
@@ -112,13 +114,15 @@ if __name__ == "__main__":
     #-------------------------------------
     #atualiza cadeiras e adiciona novas cadeiras
     novos=[]
-    for a in range(0,len(cadeiras)):
-        for b in range(0,len(data)):
-            if cadeiras[b] == data[a]["cadeira"]:
+    for b in range(0,len(cadeiras)):
+        for a in range(0,len(data)):
+            if cadeiras[b] == data[a]["cadeira"] and data[a]["ativo"]==True:
                 atualizar_cadeira(data[a],config)
         if (b+1)!=len(cadeiras):
-            novos.append(adicionar_cadeira(cadeiras[i],config))
+            novos.append(adicionar_cadeira(cadeiras[a],config))
     data=data+novos
+    for i in data:
+        print i
     #-------------------------------------
 
 

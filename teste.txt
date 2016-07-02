@@ -1,11 +1,1 @@
-{'id': 2, 'name': 'hussain'}  
-{'id': 2, 'name': 'hussain'}  
-{'id': 2, 'name': 'hussain'}  
-{'id': 2, 'name': 'hussain'}  
-{'id': 2, 'name': 'hussain'}  
-{'id': 2, 'name': 'hussain'}  
-{'id': 2, 'name': 'hussain'}  
-{'id': 2, 'name': 'hussain'}  
-{'id': 2, 'name': 'hussain'}  
-{'id': 2, 'name': 'hussain'}  
-{'id': 2, 'name': 'hussain'}  
+{'ativo': 1, 'cadeira': 'Calculo Diferencial e Integral II', 'md5': '292a8617ef2a43702adf63cf0e464077', 'link': 'https://cdi2tp.math.tecnico.ulisboa.pt/pautas', 'sigla': 'CDI II'}
