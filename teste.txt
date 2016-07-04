@@ -1,1 +1,1 @@
-{'ativo': 1, 'cadeira': 'Calculo Diferencial e Integral II', 'md5': '292a8617ef2a43702adf63cf0e464077', 'link': 'https://cdi2tp.math.tecnico.ulisboa.pt/pautas', 'sigla': 'CDI II'}
+{u'link': u'https://cdi2tp.math.tecnico.ulisboa.pt/pautas', u'cadeira': u'Matematica Discreta', u'sigla': u'CDI II', u'ativo': 1, u'md5': u'292a8617ef2a43702adf63cf0e464a077'}

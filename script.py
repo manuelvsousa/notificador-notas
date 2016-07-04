@@ -7,6 +7,7 @@ import json
 import hashlib
 from hashlib import md5
 import urllib2
+from configobj import ConfigObj
 
 ################################################
 FICHEIRO_CONFIG="config.ini"
@@ -73,17 +74,23 @@ def atualizar_cadeira(data,config):
         md5=get_sourcecode(data["link"])
         if(md5 != data["md5"]):
             #alerta(data,config)
-            altera_config(data["link"],config)
-            del(data)
+            altera_config(data,config)
+            return True
+        else:
+            return False
     else:
         error_log("IS DOWN!! " % data["link"])
 
 def altera_config(data,config):
-    config.set(data["cadeira"], data["ativo"], False)
+    try:
+        from configparser import ConfigParser
+    except ImportError:
+        from ConfigParser import ConfigParser
+    config = ConfigParser()
+    config.read(FICHEIRO_CONFIG)
+    config.set(data["cadeira"], 'ativo', False)
     with open(FICHEIRO_CONFIG, 'w') as configfile:
-        config.write(config)
-
-
+        config.write(configfile)
 
 def adicionar_cadeira(cadeira,config):
     new={}
@@ -91,38 +98,52 @@ def adicionar_cadeira(cadeira,config):
     new["cadeira"]=cadeira
     new["sigla"]=ConfigSectionMap(config,cadeira)['sigla']
     new["link"]=ConfigSectionMap(config,cadeira)['link']
-    new["ativo"]=1
+    new["ativo"]=True
     new["md5"]=get_sourcecode(ConfigSectionMap(config,cadeira)['link'])
     return new
 
-
-
+def record_data(data):
+    f = open(FICHEIRO_DATA,'w')
+    for i in data: 
+        f.write(str(i)+"\n")
+    f.close()
 
 if __name__ == "__main__":
     config = config_init(FICHEIRO_CONFIG)
     cadeiras=get_cadeiras(config)
     data = read_file_lines(FICHEIRO_DATA)
     eliminar=[]
-    #eliminar jsons que ja nao existem na config
+    for i in data:
+        print i.replace("u\"","\"").replace("u\'","\'")
+    #eliminar jsons que ja nao existem na config WORKING TESTED
     for a in range(0,len(data)):
         for b in range(0,len(cadeiras)):
             if cadeiras[b] == data[a]["cadeira"]:
                 break
-        if (b+1)!=len(data):
-            eliminar.append(a)
+            elif (b+1)==len(cadeiras):
+                eliminar.append(a)
     del_reverse_list_index(data,eliminar)
     #-------------------------------------
-    #atualiza cadeiras e adiciona novas cadeiras
+
+    #atualiza cadeiras e adiciona novas cadeiras WORKING - NOT FULL TESTED
     novos=[]
+    achas=[]
+    pos=[]
     for b in range(0,len(cadeiras)):
         for a in range(0,len(data)):
             if cadeiras[b] == data[a]["cadeira"] and data[a]["ativo"]==True:
-                atualizar_cadeira(data[a],config)
-        if (b+1)!=len(cadeiras):
-            novos.append(adicionar_cadeira(cadeiras[a],config))
+                if atualizar_cadeira(data[a],config):
+                    pos=pos+[a]
+                    break
+                achas=achas+[data[a]["cadeira"]]
+            if (a+1)==len(data) and cadeiras[b] not in achas:
+                novos.append(adicionar_cadeira(cadeiras[b],config))
     data=data+novos
+    for i in pos:
+        del(data[i])
     for i in data:
-        print i
+        print i,"\n"
+    #record_data(data)
     #-------------------------------------
 
 
