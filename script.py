@@ -101,8 +101,7 @@ def adicionar_cadeira(cadeira,config):
     new["cadeira"]=cadeira
     new["sigla"]=ConfigSectionMap(config,cadeira)['sigla']
     new["link"]=ConfigSectionMap(config,cadeira)['link']
-    new["ativo"]=str2bool(ConfigSectionMap(config,cadeira)['ativo'])
-    print(type(new["ativo"]))
+    new["ativo"]=ConfigSectionMap(config,cadeira)['ativo']
     new["md5"]=get_sourcecode(ConfigSectionMap(config,cadeira)['link'])
     return json.loads(json.dumps(new))
 
@@ -123,18 +122,10 @@ def del_unexistent_json(data,cadeiras):
                 eliminar.append(a)
     del_reverse_list_index(data,eliminar)
 
-def str2bool(v):
-    if v == "True":
-        return True
-    else:
-        return False
-
 def del_False_ones(data):
     eliminar=[]
     for i in range(0,len(data)):
-        print type(data[i]["ativo"])
-        if bool(data[i]["ativo"])==False:
-            print "fodasse"
+        if data[i]["ativo"]==False:
             eliminar=eliminar+[i]
     print eliminar
     del_reverse_list_index(data,eliminar)
@@ -143,17 +134,19 @@ if __name__ == "__main__":
     config = config_init(FICHEIRO_CONFIG)
     cadeiras=get_cadeiras(config)
     data = read_file_lines(FICHEIRO_DATA)
+    print data
     #eliminar jsons que ja nao existem na config WORKING TESTED
     del_unexistent_json(data,cadeiras)
-    #lalalalallalalalalalalalalalallala
+    #Elimina Falses
     del_False_ones(data)
-    print data
+    #print "lalas",data
+    #print "fodasse"
     #-------------------------------------
 
     #-------------------------------------
-    """
-    print data
+    #"""
     #atualiza cadeiras e adiciona novas cadeiras WORKING - NOT FULL TESTED
+    print data
     novos=[]
     achas=[]
     pos=[]
@@ -161,25 +154,26 @@ if __name__ == "__main__":
         if len(data)==0:
             novos.append(adicionar_cadeira(cadeiras[b],config))
         for a in range(0,len(data)):
+            print data[a]["ativo"],data[a]["cadeira"]
+
             if cadeiras[b] == data[a]["cadeira"] and data[a]["ativo"]==True:
+                print "asmdbasgduashdiuashdiusa"
                 if atualizar_cadeira(data[a],config):
                     pos=pos+[a]
-                    break
                 achas=achas+[data[a]["cadeira"]]
-            if(data[a]["ativo"]==False):
-                pos=pos+[a]
+            if data[a]["ativo"]==False:
                 achas=achas+[data[a]["cadeira"]]
             if (a+1)==len(data) and cadeiras[b] not in achas:
                 novos.append(adicionar_cadeira(cadeiras[b],config))
-    
-    data=data+novos
+    print "pos",pos
+    data=data#+novos
     for i in pos:
         del(data[i])
     for i in data:
         print i,"\n"
-    record_data(data)
+    #record_data(data)
     #-------------------------------------
-    """
+    #"""
 
 
 
