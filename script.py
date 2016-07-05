@@ -8,7 +8,7 @@ import hashlib
 from hashlib import md5
 import urllib2
 from configobj import ConfigObj
-
+import io
 ################################################
 FICHEIRO_CONFIG="config.ini"
 FICHEIRO_DATA="teste.txt"
@@ -54,26 +54,19 @@ def get_cadeiras(config):
         else:
             break
     return config.sections()[0:i]
-sudo chown -R yourUsername /Users/yourusername/Dropbox
+
 
 
 def read_file_lines(file):
-    """
     with open(file) as f:
         lines = f.readlines()
     for i in range(0,len(lines)):
         json_acceptable_string = lines[i].replace("'", "\"")
-        print json_acceptable_string
+        #print json_acceptable_string
         d = json.loads(json_acceptable_string)
         lines[i]=d
     return lines
-    """
-    data = []
-    with open(FICHEIRO_DATA) as f:
-        for line in f:
-            print line
-            data.append(line)
-    print data
+
 
 def del_reverse_list_index(data,eliminar):
     for i in reversed(eliminar):
@@ -108,22 +101,20 @@ def adicionar_cadeira(cadeira,config):
     new["cadeira"]=cadeira
     new["sigla"]=ConfigSectionMap(config,cadeira)['sigla']
     new["link"]=ConfigSectionMap(config,cadeira)['link']
-    new["ativo"]=True
+    new["ativo"]=str2bool(ConfigSectionMap(config,cadeira)['ativo'])
+    print(type(new["ativo"]))
     new["md5"]=get_sourcecode(ConfigSectionMap(config,cadeira)['link'])
     return json.loads(json.dumps(new))
 
 def record_data(data):
     f = open(FICHEIRO_DATA,'w')
     for i in data: 
-        f.write(str(i)+"\n")
+        i = json.dumps(i, ensure_ascii=False, encoding='utf8')
+        f.write(unicode(i)+"\n")
     f.close()
 
-if __name__ == "__main__":
-    config = config_init(FICHEIRO_CONFIG)
-    cadeiras=get_cadeiras(config)
-    data = read_file_lines(FICHEIRO_DATA)
+def del_unexistent_json(data,cadeiras):
     eliminar=[]
-    #eliminar jsons que ja nao existem na config WORKING TESTED
     for a in range(0,len(data)):
         for b in range(0,len(cadeiras)):
             if cadeiras[b] == data[a]["cadeira"]:
@@ -131,29 +122,64 @@ if __name__ == "__main__":
             elif (b+1)==len(cadeiras):
                 eliminar.append(a)
     del_reverse_list_index(data,eliminar)
+
+def str2bool(v):
+    if v == "True":
+        return True
+    else:
+        return False
+
+def del_False_ones(data):
+    eliminar=[]
+    for i in range(0,len(data)):
+        print type(data[i]["ativo"])
+        if bool(data[i]["ativo"])==False:
+            print "fodasse"
+            eliminar=eliminar+[i]
+    print eliminar
+    del_reverse_list_index(data,eliminar)
+
+if __name__ == "__main__":
+    config = config_init(FICHEIRO_CONFIG)
+    cadeiras=get_cadeiras(config)
+    data = read_file_lines(FICHEIRO_DATA)
+    #eliminar jsons que ja nao existem na config WORKING TESTED
+    del_unexistent_json(data,cadeiras)
+    #lalalalallalalalalalalalalalallala
+    del_False_ones(data)
+    print data
     #-------------------------------------
 
+    #-------------------------------------
+    """
+    print data
     #atualiza cadeiras e adiciona novas cadeiras WORKING - NOT FULL TESTED
     novos=[]
     achas=[]
     pos=[]
     for b in range(0,len(cadeiras)):
+        if len(data)==0:
+            novos.append(adicionar_cadeira(cadeiras[b],config))
         for a in range(0,len(data)):
             if cadeiras[b] == data[a]["cadeira"] and data[a]["ativo"]==True:
                 if atualizar_cadeira(data[a],config):
                     pos=pos+[a]
                     break
                 achas=achas+[data[a]["cadeira"]]
+            if(data[a]["ativo"]==False):
+                pos=pos+[a]
+                achas=achas+[data[a]["cadeira"]]
             if (a+1)==len(data) and cadeiras[b] not in achas:
                 novos.append(adicionar_cadeira(cadeiras[b],config))
+    
     data=data+novos
     for i in pos:
         del(data[i])
     for i in data:
         print i,"\n"
-    #record_data(data)
+    record_data(data)
     #-------------------------------------
-
+    """
 
 
 
