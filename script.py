@@ -54,16 +54,26 @@ def get_cadeiras(config):
         else:
             break
     return config.sections()[0:i]
+sudo chown -R yourUsername /Users/yourusername/Dropbox
+
 
 def read_file_lines(file):
+    """
     with open(file) as f:
         lines = f.readlines()
-    lines=[line.rstrip('\n') for line in open(file)]
     for i in range(0,len(lines)):
         json_acceptable_string = lines[i].replace("'", "\"")
+        print json_acceptable_string
         d = json.loads(json_acceptable_string)
         lines[i]=d
     return lines
+    """
+    data = []
+    with open(FICHEIRO_DATA) as f:
+        for line in f:
+            print line
+            data.append(line)
+    print data
 
 def del_reverse_list_index(data,eliminar):
     for i in reversed(eliminar):
@@ -100,7 +110,7 @@ def adicionar_cadeira(cadeira,config):
     new["link"]=ConfigSectionMap(config,cadeira)['link']
     new["ativo"]=True
     new["md5"]=get_sourcecode(ConfigSectionMap(config,cadeira)['link'])
-    return new
+    return json.loads(json.dumps(new))
 
 def record_data(data):
     f = open(FICHEIRO_DATA,'w')
@@ -113,8 +123,6 @@ if __name__ == "__main__":
     cadeiras=get_cadeiras(config)
     data = read_file_lines(FICHEIRO_DATA)
     eliminar=[]
-    for i in data:
-        print i.replace("u\"","\"").replace("u\'","\'")
     #eliminar jsons que ja nao existem na config WORKING TESTED
     for a in range(0,len(data)):
         for b in range(0,len(cadeiras)):
