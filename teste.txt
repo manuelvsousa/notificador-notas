@@ -1,2 +1,0 @@
-{"link": "https://cdi2tp.math.tecnico.ulisboa.pt/pautas", "cadeira": "Calculo Diferencial e Integral II", "sigla": "CDI II", "ativo": true, "md5": "75efea15a94d535133ea05c02c2fc5c8"}
-{"link": "https://fenix.tecnico.ulisboa.pt/disciplinas/IAED101113/2015-2016/2-semestre/notas", "cadeira": "Introducao aasdasdsaos Algoritmos e Estruturas de Dados", "sigla": "IAED", "ativo": true, "md5": "a5755c1a51568aa5bc4da0d7af49c7a4"}
