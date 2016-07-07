@@ -3,11 +3,10 @@ import urllib #Page is up
 import urllib2 #get source code
 import json
 import hashlib
-import requests
 
 ################################################
 FICHEIRO_CONFIG="config.ini"
-FICHEIRO_DATA="teste.txt"
+FICHEIRO_DATA="data.txt"
 ################################################
 
 def is_up(link):
@@ -159,15 +158,16 @@ def update_add_cadeiras(cadeiras,data,config):
     return data
 
 if __name__ == "__main__":
-    config = config_init(FICHEIRO_CONFIG)
-    cadeiras=get_cadeiras(config)
-    data = read_file_lines(FICHEIRO_DATA)
-    #eliminar jsons que ja nao existem na config WORKING TESTED
-    del_unexistent_json(data,cadeiras)
-    #atualiza cadeiras e adiciona novas cadeiras WORKING - NOT FULL TESTED
-    data=update_add_cadeiras(cadeiras,data,config)
-    #escreve no ficheiro data
-    record_data(data)
+    while(1):
+        config = config_init(FICHEIRO_CONFIG)
+        cadeiras=get_cadeiras(config)
+        data = read_file_lines(FICHEIRO_DATA)
+        #eliminar jsons que ja nao existem na config WORKING TESTED
+        del_unexistent_json(data,cadeiras)
+        #atualiza cadeiras e adiciona novas cadeiras WORKING - NOT FULL TESTED
+        data=update_add_cadeiras(cadeiras,data,config)
+        #escreve no ficheiro data
+        record_data(data)
 
 
 
