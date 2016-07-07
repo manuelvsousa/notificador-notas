@@ -3,6 +3,7 @@ import urllib #Page is up
 import urllib2 #get source code
 import json
 import hashlib
+import requests
 
 ################################################
 FICHEIRO_CONFIG="config.ini"
@@ -66,12 +67,24 @@ def del_reverse_list_index(data,eliminar):
     for i in reversed(eliminar):
         del(data[i])
 
+def send_simple_message(email,cadeira_nome,cadeira_sigla,link,nome):
+    return requests.post(
+        "https://api.mailgun.net/v3/sandboxc8e792abe62b4e0a8807ae40829d329e.mailgun.org/messages",
+        auth=("api", "key-e2c43c98f6a756838662b39bf3c93253"),
+        data={"from": "Notas Tecnico <notas@tecnico.ulisboa.pt>",
+              "to": nome + " <" + email + ">",
+              "subject": "Notas de " + cadeira_nome + " ("+cadeira_sigla+")",
+              "text": "As Notas de " + cadeira_nome + " ("+cadeira_sigla+") estao disponiveis em " + link})
+
+
 def atualizar_cadeira(data,config):
     if(is_up(data["link"])):
         md5=get_sourcecode(data["link"])
         if(md5 != data["md5"]):
             #alerta(data,config)
             print "ALERTA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+            if str2bool(ConfigSectionMap(config,"email")['ativo'])==True:
+                send_simple_message(ConfigSectionMap(config,"email")['email'],data["cadeira"],data["sigla"],data["link"],ConfigSectionMap(config,"email")['nome'])
             altera_config(data,config)
             return True
         else:
@@ -119,6 +132,8 @@ def del_unexistent_json(data,cadeiras):
 
 def str2bool(s):
     return s.lower() in ["true","t","1"]
+
+
 
 def update_add_cadeiras(cadeiras,data,config):
     novos=[]
