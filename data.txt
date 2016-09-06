@@ -1,3 +1,2 @@
-{"link": "https://cdi2tp.math.tecnico.ulisboa.pt/pautas", "cadeira": "Calculo Diferencial e Integral II", "sigla": "CDI II", "ativo": true, "md5": "19ec9cb3c2592baa4e51a7d0f010e32b"}
-{"link": "https://fenix.tecnico.ulisboa.pt/disciplinas/MD51113/2015-2016/2-semestre/pauta", "cadeira": "Matematica Discreta", "sigla": "MD", "ativo": true, "md5": "cd8bed8361371edd4018567e6741bd89"}
-{"ativo": true, "cadeira": "Logica para Programacao", "md5": "be26012bca7b9ce5793af25dfdfd899eb85c", "link": "https://fenix.tecnico.ulisboa.pt/disciplinas/LP51113/2015-2016/2-semestre/notas-exercicios", "sigla": "LP"}
+{"ativo": false, "cadeira": "Programacao com Objetos", "md5": "cf1d54316d132b55bd71dd70eb54bc44", "link": "https://fenix.tecnico.ulisboa.pt/disciplinas/PO17179/2016-2017/1-semestre/notas", "sigla": "PO"}
+{"ativo": true, "cadeira": "MEU", "md5": "09553fae7a694a9ce3b297f08c2e9c14", "link": "http://web.tecnico.ulisboa.pt/manuelvsousa/notas", "sigla": "MEU"}

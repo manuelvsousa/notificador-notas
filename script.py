@@ -4,7 +4,7 @@ import urllib2 #get source code
 import json
 import hashlib
 import requests
-from urlparse import urlparse
+import time
 
 ################################################
 FICHEIRO_CONFIG="config.ini"
@@ -34,6 +34,8 @@ def ConfigSectionMap(Config,section):
 
 def get_sourcecode(link):
     response = urllib2.urlopen(link)
+    #print response.read()
+    #print("\n--------------------------------------------------------\n")
     m = hashlib.md5()
     m.update(response.read())
     return m.hexdigest()
@@ -68,7 +70,17 @@ def del_reverse_list_index(data,eliminar):
     for i in reversed(eliminar):
         del(data[i])
 
-def send_email(email,cadeira_nome,cadeira_sigla,link,nome):
+
+def post_dict(url, dictionary):
+    http_obj = Http()
+    resp, content = http.request(
+        uri=url,
+        method='POST',
+        headers={'Content-Type': 'application/json; charset=UTF-8'},
+        body=dumps(dictionary),
+    )
+
+def send_simple_message(email,cadeira_nome,cadeira_sigla,link,nome):
     return requests.post(
         "https://api.mailgun.net/v3/sandboxc8e792abe62b4e0a8807ae40829d329e.mailgun.org/messages",
         auth=("api", "key-e2c43c98f6a756838662b39bf3c93253"),
@@ -78,31 +90,14 @@ def send_email(email,cadeira_nome,cadeira_sigla,link,nome):
               "text": "As Notas de " + cadeira_nome + " ("+cadeira_sigla+") estao disponiveis em " + link})
 
 
-def send_sms(telemovel,email,api,cadeira_nome,cadeira_sigla,link):
-    data =  urllib.parse.urlencode({
-            'username': email, 
-            'hash': api, 
-            'numbers': numero,
-            'message' : "As Notas de " + cadeira_nome + " ("+cadeira_sigla+") estao disponiveis em " + link, 
-            'sender': "Notificador de Notas"
-            })
-    data = data.encode('utf-8')
-    request = urllib.request.Request("http://api.txtlocal.com/send/?")
-    f = urllib.request.urlopen(request, data)
-    fr = f.read()
-    return(fr)
-
 def atualizar_cadeira(data,config):
     if(is_up(data["link"])):
         md5=get_sourcecode(data["link"])
         if(md5 != data["md5"]):
             #alerta(data,config)
-            print "ALERTA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+            print "ALERTA NOTA!!!!"
             if str2bool(ConfigSectionMap(config,"email")['ativo'])==True:
-                send_email(ConfigSectionMap(config,"email")['email'],data["cadeira"],data["sigla"],data["link"],ConfigSectionMap(config,"email")['nome'])
-            #if str2bool(ConfigSectionMap(config,"telemovel")['ativo'])==True:
-            #    resp =  send_sms(ConfigSectionMap(config,"telemovel")['numero'],ConfigSectionMap(config,"telemovel")['email'],ConfigSectionMap(config,"telemovel")['api'],data["cadeira"],data["sigla"],data["link"])
-            #    print (resp)
+                send_simple_message(ConfigSectionMap(config,"email")['email'],data["cadeira"],data["sigla"],data["link"],ConfigSectionMap(config,"email")['nome'])
             altera_config(data,config)
             return True
         else:
@@ -154,11 +149,14 @@ def str2bool(s):
 
 
 def update_add_cadeiras(cadeiras,data,config):
-    novos=black_list=pos=[]
+    novos=[]
+    achas=[]
+    pos=[]
     for b in range(0,len(cadeiras)):
         if len(data)==0 and str2bool(ConfigSectionMap(config,cadeiras[b])['ativo'])==True:
             novos.append(adicionar_cadeira(cadeiras[b],config))
         for a in range(0,len(data)):
+
             if cadeiras[b] == data[a]["cadeira"] and data[a]["ativo"]==True:
                 if str2bool(ConfigSectionMap(config,cadeiras[b])['ativo'])==True:
                     if atualizar_cadeira(data[a],config):
@@ -166,31 +164,31 @@ def update_add_cadeiras(cadeiras,data,config):
                         data[a]["ativo"]=False
                 else:
                     pos=pos+[a]
-                black_list=black_list+[data[a]["cadeira"]]
-            if (a+1)==len(data) and cadeiras[b] not in black_list and str2bool(ConfigSectionMap(config,cadeiras[b])['ativo'])==True:
+                achas=achas+[data[a]["cadeira"]]
+            if (a+1)==len(data) and cadeiras[b] not in achas and str2bool(ConfigSectionMap(config,cadeiras[b])['ativo'])==True:
                 novos.append(adicionar_cadeira(cadeiras[b],config))
     data=data+novos
     del_reverse_list_index(data,pos)
     return data
 
-def main():
-    cadeiras=get_cadeiras(config)
-    data = read_file_lines(FICHEIRO_DATA)
-    #eliminar jsons que ja nao existem na config
-    del_unexistent_json(data,cadeiras)
-    #atualiza cadeiras e adiciona novas cadeiras
-    data=update_add_cadeiras(cadeiras,data,config)
-    #escreve no ficheiro data
-    record_data(data)
-    return config_init(FICHEIRO_CONFIG)
-
 if __name__ == "__main__":
-
-    config = config_init(FICHEIRO_CONFIG)
-    while str2bool(ConfigSectionMap(config,"running")['crontab'])==False:
-        config=main()
-    while str2bool(ConfigSectionMap(config,"running")['crontab'])==True:
-        main()
-
-
+    segundos=3
+    while 1:
+        time.sleep(segundos)
+        config = config_init(FICHEIRO_CONFIG)
+        if str2bool(ConfigSectionMap(config,"running")['crontab'])==True:
+            crontab=True
+            break
+        cadeiras=get_cadeiras(config)
+        data = read_file_lines(FICHEIRO_DATA)
+        del_unexistent_json(data,cadeiras)
+        data=update_add_cadeiras(cadeiras,data,config)
+        record_data(data)
+        segundos=float(ConfigSectionMap(config,"running")['segundos'])
+    if crontab==True:
+        cadeiras=get_cadeiras(config)
+        data = read_file_lines(FICHEIRO_DATA)
+        del_unexistent_json(data,cadeiras)
+        data=update_add_cadeiras(cadeiras,data,config)
+        record_data(data)
 
