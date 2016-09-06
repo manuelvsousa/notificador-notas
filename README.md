@@ -19,7 +19,7 @@ git clone git@github.com:manuelsousa7/notificador-notas.git
 cd notificador-notas
 sh install.sh
 ```
-Após estes passos devera editar o ficheiro de configuracoes com as com todas as informações pessoais para as notificações. Por fim fazer ```Ctrl + X```, selecionar Y, e por fim Enter. Deste modo o script esta pronto a enviar uma notificação assim que detetar uma mudanca numa das paginas de notas.
+Após estes passos devera editar o ficheiro de configuracoes com as com todas as informações pessoais para as notificações. Por fim fazer ```Ctrl + X```, selecionar ```Y```, e por fim ```Enter```. Deste modo o script esta pronto a enviar uma notificação assim que detetar uma mudanca numa das paginas de notas.
 
 
 - Instalar com crontab
@@ -47,11 +47,13 @@ Adicionar o seguinte exemplo no final do ficheiro que executara o script a cada 
 
 #### API's
 
-- Sistema de Emails
+- Sistema de Emails (Ativo por defeito)
 
-
+O script utiliza uma API de um serviço de emails chamado MailGun. Por defeito já vem configurada uma conta que pode utilizada por quem utilizar o script. Existe uma cota mensal de 10.000 emails pelo que será necessario cada utilizador criar a sua prorpria conta se esta cota for ultrapassada.
 
 - Sistema de SMS
+
+De modo construir uma notificasse por SMS de forma simples, seria necessario investir em serviços deste tipo. Para isso o script é capaz de enviar SMSs pelo serviço TextLocal, que oferece 10 sms gratis por cada conta criada. (com alguma criatividade é possivel ter esta funcionalidade sempre ativa)
 
 
 #### Bugs / Reporte de Problemas
