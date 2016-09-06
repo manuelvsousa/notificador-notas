@@ -2,13 +2,15 @@
 
 Versão: 1.0.0 (Beta) 
 
-Script que deteta alteracões de paginas WEB, e envia notificações através de emails e SMS. Composto por um sistema de configuração de fácil utilização.
+Script que deteta alterações de paginas WEB, e envia notificações através de emails e SMS. Composto por um sistema de configuração de fácil utilização.
 
 #### Modos de Utilização
 
-O Script foi feito de modo a operar de 2 maneiras. Sobre uma sessao screen ou sobre um crontab. No ficheiro de configuração do script é possivel escolher a maneira como queremos executar o script. Por defeito, o Screen está ativo visto que é a única opção para o sistema SIGMA do Instituto Superior Técnico.
+- O Script foi feito de modo a operar de 2 maneiras. Sobre uma sessão ```screen``` ou sobre um ```crontab```. No ficheiro de configuração do script é possível escolher a maneira como queremos executar o script. Por defeito, o ```screen``` está ativo visto que é a única opção para o sistema ```sigma``` do Instituto Superior Técnico, ao qual todos os alunos desta instituição têm acesso e podem recorrer para plantar o script.
 
-O sistema de configurações permite adicionar um numero ilimitado de disciplinas. Todas as disciplinas futuramente adicionadas devem ser adicionadas no topo e cumprir a mesma sintaxe das disciplinas default.
+- O sistema de configurações permite adicionar um numero ilimitado de disciplinas. Todas as disciplinas futuramente adicionadas devem ser adicionadas no topo e cumprir a mesma sintaxe das disciplinas default.
+
+- Não é recomendado reproduzir o script abaixo dos 6 segundos de diferença 
 
 #### Como Instalar
 
@@ -49,17 +51,13 @@ Adicionar o seguinte exemplo no final do ficheiro que executara o script a cada 
 
 - Sistema de Emails (Ativo por defeito)
 
-O script utiliza uma API de um serviço de emails chamado MailGun. Por defeito já vem configurada uma conta que pode utilizada por quem utilizar o script. Existe uma cota mensal de 10.000 emails pelo que será necessario cada utilizador criar a sua prorpria conta se esta cota for ultrapassada.
+O script utiliza uma API de um serviço de emails chamado MailGun. Por defeito já vem configurada uma conta que pode utilizada por quem utilizar o script. Existe uma cota mensal de 10.000 emails pelo que será necessário cada utilizador criar a sua própria conta se esta cota for ultrapassada.
 
 - Sistema de SMS
 
-De modo construir uma notificasse por SMS de forma simples, seria necessario investir em serviços deste tipo. Para isso o script é capaz de enviar SMSs pelo serviço TextLocal, que oferece 10 sms gratis por cada conta criada. (com alguma criatividade é possivel ter esta funcionalidade sempre ativa)
+De modo construir um script que notificasse o utilizador por SMS de forma simples, seria necessário investir em serviços deste tipo. De forma a contornar este problema com uma solução gratuita o script é capaz de enviar SMSs pelo serviço TextLocal, que oferece 10 sms gratis por cada conta criada. No ficheiro de configuração é possível alterar as API's. (com alguma criatividade é possível ter esta funcionalidade sempre ativa)
 
 
-#### Bugs / Reporte de Problemas
+#### Bugs / Reporte de Problemas / Sugestões
 
-Abrir ISSUE no Github
-
-#### Sugestões
-
-Enviar um email para manuelvsousa@tecnico.ulisboa.pt
+Em caso de problemas abrir ISSUE no Github, ou enviar email para manuelvsousa@tecnico.ulisboa.pt
