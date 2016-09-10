@@ -1,2 +1,0 @@
-{"ativo": false, "cadeira": "Programacao com Objetos", "md5": "cf1d54316d132b55bd71dd70eb54bc44", "link": "https://fenix.tecnico.ulisboa.pt/disciplinas/PO17179/2016-2017/1-semestre/notas", "sigla": "PO"}
-{"ativo": true, "cadeira": "MEU", "md5": "09553fae7a694a9ce3b297f08c2e9c14", "link": "http://web.tecnico.ulisboa.pt/manuelvsousa/notas", "sigla": "MEU"}

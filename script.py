@@ -1,6 +1,8 @@
 import ConfigParser #Configuration files
 import urllib #Page is up
-import urllib2 #get source code
+import urllib2 #Page is up
+import httplib
+from urlparse import urlparse
 import json
 import hashlib
 import requests
@@ -11,8 +13,16 @@ FICHEIRO_CONFIG="config.ini"
 FICHEIRO_DATA="data.txt"
 ################################################
 
-def is_up(link):
-    return urllib.urlopen(link).getcode() == 200
+def is_up(url):
+    try:
+        p = urlparse(url)
+        conn = httplib.HTTPConnection(p.netloc)
+        conn.request('HEAD', p.path)
+        resp = conn.getresponse()
+        return resp.status < 400
+    except httplib.URLError:
+        print "ERRO DO CARALHO"
+        return False
 
 def error_log(message):
     file = open("error.log", "rw+")
@@ -34,8 +44,6 @@ def ConfigSectionMap(Config,section):
 
 def get_sourcecode(link):
     response = urllib2.urlopen(link)
-    #print response.read()
-    #print("\n--------------------------------------------------------\n")
     m = hashlib.md5()
     m.update(response.read())
     return m.hexdigest()
@@ -70,16 +78,6 @@ def del_reverse_list_index(data,eliminar):
     for i in reversed(eliminar):
         del(data[i])
 
-
-def post_dict(url, dictionary):
-    http_obj = Http()
-    resp, content = http.request(
-        uri=url,
-        method='POST',
-        headers={'Content-Type': 'application/json; charset=UTF-8'},
-        body=dumps(dictionary),
-    )
-
 def send_simple_message(email,cadeira_nome,cadeira_sigla,link,nome):
     return requests.post(
         "https://api.mailgun.net/v3/sandboxc8e792abe62b4e0a8807ae40829d329e.mailgun.org/messages",
@@ -95,7 +93,7 @@ def atualizar_cadeira(data,config):
         md5=get_sourcecode(data["link"])
         if(md5 != data["md5"]):
             #alerta(data,config)
-            print "ALERTA NOTA!!!!"
+            print "ALERTA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
             if str2bool(ConfigSectionMap(config,"email")['ativo'])==True:
                 send_simple_message(ConfigSectionMap(config,"email")['email'],data["cadeira"],data["sigla"],data["link"],ConfigSectionMap(config,"email")['nome'])
             altera_config(data,config)
@@ -181,14 +179,19 @@ if __name__ == "__main__":
             break
         cadeiras=get_cadeiras(config)
         data = read_file_lines(FICHEIRO_DATA)
+        #eliminar jsons que ja nao existem na config WORKING TESTED
         del_unexistent_json(data,cadeiras)
+        #atualiza cadeiras e adiciona novas cadeiras WORKING - NOT FULL TESTED
         data=update_add_cadeiras(cadeiras,data,config)
+        #escreve no ficheiro data
         record_data(data)
         segundos=float(ConfigSectionMap(config,"running")['segundos'])
     if crontab==True:
         cadeiras=get_cadeiras(config)
         data = read_file_lines(FICHEIRO_DATA)
+        #eliminar jsons que ja nao existem na config WORKING TESTED
         del_unexistent_json(data,cadeiras)
+        #atualiza cadeiras e adiciona novas cadeiras WORKING - NOT FULL TESTED
         data=update_add_cadeiras(cadeiras,data,config)
+        #escreve no ficheiro data
         record_data(data)
-
