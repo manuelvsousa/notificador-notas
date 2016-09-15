@@ -1,6 +1,7 @@
 # Notificador de Notas
 
 Versão: Pre-Release Soon
+
 Estado para o Sigma: Not Working
 
 Script que deteta alterações de paginas WEB, e envia notificações através de emails e SMS. Composto por um sistema de configuração de fácil utilização.
