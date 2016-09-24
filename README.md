@@ -1,27 +1,29 @@
 # Notificador de Notas
 
-Versão: 1.0.0 (Beta) 
+Versão: Pre-Release Soon
+
+Estado para o Sigma: Not Working
 
 Script que deteta alterações de paginas WEB, e envia notificações através de emails e SMS. Composto por um sistema de configuração de fácil utilização.
 
 #### Modos de Utilização
 
-- O Script foi feito de modo a operar de 2 maneiras. Sobre uma sessão ```screen``` ou sobre um ```crontab```. No ficheiro de configuração do script é possível escolher a maneira como queremos executar o script. Por defeito, o ```screen``` está ativo visto que é a única opção para o sistema ```sigma``` do Instituto Superior Técnico, ao qual todos os alunos desta instituição têm acesso e podem recorrer para plantar o script.
+- O Script foi feito de modo a operar de 2 maneiras. Sobre uma sessão ```screen``` ou sobre um ```crontab```. No ficheiro de configuração do script é possível escolher a maneira como queremos executar o script. Por defeito, o ```screen``` está ativo visto que é a única opção para o sistema ```sigma``` do Instituto Superior Técnico (para onde este script foi realizado), ao qual todos os alunos desta Instituição têm acesso e podem recorrer para instalar o script.
 
 - O sistema de configurações permite adicionar um numero ilimitado de disciplinas. Todas as disciplinas futuramente adicionadas devem ser adicionadas no topo e cumprir a mesma sintaxe das disciplinas default.
 
-- Não é recomendado reproduzir o script abaixo dos 6 segundos de diferença 
+- Não é recomendado reproduzir o script abaixo dos 5 segundos de diferença 
 
 #### Como Instalar
 
-- Instalar com SCREEN (automático)
+- Instalar com SCREEN (automático) [RECOMENDADO]
 
 ```
 git clone git@github.com:manuelsousa7/notificador-notas.git
 cd notificador-notas
-sh install.sh
+sh screen.sh
 ```
-Após estes passos devera editar o ficheiro de configuracoes com as com todas as informações pessoais para as notificações. Por fim fazer ```Ctrl + X```, selecionar ```Y```, e por fim ```Enter```. Deste modo o script esta pronto a enviar uma notificação assim que detetar uma mudanca numa das paginas de notas.
+Após estes passos deverá editar o ficheiro de configurações ```config.ini``` no seu editor preferido com todas as informações pessoais para receber as notificações. Pode utilizar o nano ao fazer ```nano config.ini```, editar o ficheiro e no final ```Ctrl + X```, selecionar ```Y```, e por fim ```Enter```. Deste modo o script esta pronto a enviar uma notificação assim que detetar uma mudanca numa das paginas de notas.
 
 
 - Instalar com crontab
