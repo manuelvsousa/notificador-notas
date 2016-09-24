@@ -1,5 +1,5 @@
 import ConfigParser #Configuration files
-import urllib #Page is up
+#import urllib #Page is up
 import urllib2 #Page is up
 import httplib
 from urlparse import urlparse
@@ -21,7 +21,6 @@ def is_up(url):
         resp = conn.getresponse()
         return resp.status < 400
     except httplib.URLError:
-        print "ERRO DO CARALHO"
         return False
 
 def error_log(message):
