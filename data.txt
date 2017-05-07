@@ -1,0 +1,2 @@
+{"ativo": true, "cadeira": "Analise e Sintese de Algoritmos", "md5": "76fbee92767eafe238d17a87f660ac2a", "link": "https://fenix.tecnico.ulisboa.pt/disciplinas/PO17179/2016-2017/1-semestre/notas", "sigla": "ASA"}
+{"ativo": true, "cadeira": "Teoria de Computacao", "md5": "db9eac64178d75a42b270030f799812f", "link": "https://fenix.tecnico.ulisboa.pt/disciplinas/SO7179/2016-2017/1-semestre/notas", "sigla": "TC"}
