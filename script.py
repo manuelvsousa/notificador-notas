@@ -81,11 +81,15 @@ def read_file_lines(file):
 
 
 def del_reverse_list_index(data, eliminar):
+    print  eliminar
     for i in reversed(eliminar):
-        del(data[i])
+        del(i)
 
 
 def send_simple_message(email, cadeira_nome, cadeira_sigla, link, nome):
+    publish_facebook("[" + cadeira_sigla + "]\nAs Notas de " + cadeira_nome +
+                     " (" + cadeira_sigla + ") estao disponiveis em " + link)
+
     return requests.post(
         "https://api.mailgun.net/v3/sandboxc8e792abe62b4e0a8807ae40829d329e.mailgun.org/messages",
         auth=("api", "key-e2c43c98f6a756838662b39bf3c93253"),
@@ -93,8 +97,7 @@ def send_simple_message(email, cadeira_nome, cadeira_sigla, link, nome):
               "to": nome + " <" + email + ">",
               "subject": "Notas de " + cadeira_nome + " (" + cadeira_sigla + ")",
               "text": "As Notas de " + cadeira_nome + " (" + cadeira_sigla + ") estao disponiveis em " + link})
-    publish_facebook("[" + cadeira_sigla + "]\nAs Notas de " + cadeira_nome +
-                     " (" + cadeira_sigla + ") estao disponiveis em " + link)
+
 
 
 def atualizar_cadeira(data, config):
@@ -188,7 +191,7 @@ def update_add_cadeiras(cadeiras, data, config):
 
 if __name__ == "__main__":
     segundos = 3
-    publish_facebook("ola")
+    publish_facebook("ola\nadeus")
     while 1:
         time.sleep(segundos)
         config = config_init(FICHEIRO_CONFIG)

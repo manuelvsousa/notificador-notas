@@ -1,2 +1,8 @@
-{"ativo": true, "cadeira": "Analise e Sintese de Algoritmos", "md5": "76fbee92767eafe238d17a87f660ac2a", "link": "https://fenix.tecnico.ulisboa.pt/disciplinas/PO17179/2016-2017/1-semestre/notas", "sigla": "ASA"}
-{"ativo": true, "cadeira": "Teoria de Computacao", "md5": "db9eac64178d75a42b270030f799812f", "link": "https://fenix.tecnico.ulisboa.pt/disciplinas/SO7179/2016-2017/1-semestre/notas", "sigla": "TC"}
+{"link": "https://fenix.tecnico.ulisboa.pt/disciplinas/PO17179/2016-2017/1-semestre/notas", "cadeira": "Analise e Sintese de Algoritmos", "sigla": "ASA", "ativo": true, "md5": "76fbee92767eafe238d17a87f660ac2a"}
+{"link": "https://fenix.tecnico.ulisboa.pt/disciplinas/SO7179/2016-2017/1-semestre/notas", "cadeira": "Teoria de Computacao", "sigla": "TC", "ativo": true, "md5": "db9eac64178d75a42b270030f799812f"}
+{"link": "https://fenix.tecnico.ulisboa.pt/disciplinas/EO9111326/2016-2017/2-semestre/notas", "cadeira": "Eletromagnetismo e Optica", "sigla": "EO", "ativo": true, "md5": "d958172b7cbc72107d3246cfd3e0fca5"}
+{"link": "https://fenix.tecnico.ulisboa.pt/disciplinas/PEst20111326/2016-2017/2-semestre/notas", "cadeira": "Probabilidade e Estatistica", "sigla": "PE", "ativo": true, "md5": "b06dc8d2b19a52ade9b5b7b019baf1a2"}
+{"link": "http://web.tecnico.ulisboa.pt/~manuelvsousa/teste/", "cadeira": "Cadeira de Teste", "sigla": "TIST", "ativo": false, "md5": "826e912da9279756d18dc96dbf362f46"}
+{"link": "https://fenix.tecnico.ulisboa.pt/disciplinas/IPM17111326/2016-2017/2-semestre/pautas-e-enunciados", "cadeira": "Interfaces Pessoa Maquina", "sigla": "IPM", "ativo": true, "md5": "d47e8556a459cc5a19f37946f638681a"}
+{"link": "https://fenix.tecnico.ulisboa.pt/disciplinas/SO7179/2016-2017/1-semestre/notas", "cadeira": "Analise Complexa e Equacoes Diferenciais", "sigla": "ACED", "ativo": true, "md5": "db9eac64178d75a42b270030f799812f"}
+{"link": "http://web.tecnico.ulisboa.pt/~manuelvsousa/teste/", "cadeira": "Cadeira de Teste", "sigla": "TIST", "ativo": false, "md5": "b760a251ea79641eff798bb6dc48bcaa"}
