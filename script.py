@@ -47,7 +47,7 @@ def ConfigSectionMap(Config, section):
 
 def get_sourcecode(link):
     response = urllib2.urlopen(link)
-    if(response.code != 200 and str(response.read()).find("open-source, academic, information, ") != -1):
+    if(response.code != 200 or str(response.read()).find("open-source, academic, information, ") == -1):
         return "error"
     m = hashlib.md5()
     m.update(response.read())
@@ -191,7 +191,6 @@ def update_add_cadeiras(cadeiras, data, config):
 
 if __name__ == "__main__":
     segundos = 3
-    publish_facebook("ola\nadeus")
     while 1:
         time.sleep(segundos)
         config = config_init(FICHEIRO_CONFIG)
