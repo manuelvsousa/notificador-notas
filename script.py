@@ -191,7 +191,6 @@ def update_add_cadeiras(cadeiras, data, config):
 
 if __name__ == "__main__":
     segundos = 3
-    publish_facebook("ola\nadeus")
     while 1:
         time.sleep(segundos)
         config = config_init(FICHEIRO_CONFIG)
