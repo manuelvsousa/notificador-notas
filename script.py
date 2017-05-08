@@ -26,7 +26,7 @@ def is_up(url):
 
 
 def error_log(message):
-    file = open("error.log", "rw+")
+    file = open("error.txt", "w")
     line = file.write(message)
     file.close()
 
@@ -47,7 +47,7 @@ def ConfigSectionMap(Config, section):
 
 def get_sourcecode(link):
     response = urllib2.urlopen(link)
-    if(response.code != 200 or str(response.read()).find("open-source, academic, information, ") == -1):
+    if(response.code != 200 or str(response.read()).find("open-source, academic, information, platform, academic administration, higher education, e-learni") == -1):
         return "error"
     m = hashlib.md5()
     m.update(response.read())
@@ -81,7 +81,6 @@ def read_file_lines(file):
 
 
 def del_reverse_list_index(data, eliminar):
-    print  eliminar
     for i in reversed(eliminar):
         del(i)
 
@@ -99,18 +98,17 @@ def send_simple_message(email, cadeira_nome, cadeira_sigla, link, nome):
               "text": "As Notas de " + cadeira_nome + " (" + cadeira_sigla + ") estao disponiveis em " + link})
 
 
-
 def atualizar_cadeira(data, config):
     md5 = get_sourcecode(data["link"])
     if(md5 == "error"):
-        error_log("IS DOWN!! " % data["link"])
+        error_log("IS DOWN!! %s " % data["link"])
         return False
 
     if(md5 != data["md5"]):
         print "Detecao alterada"
         if str2bool(ConfigSectionMap(config, "email")['ativo']) == True:
             send_simple_message(ConfigSectionMap(config, "email")['email'], data["cadeira"], data[
-                                    "sigla"], data["link"], ConfigSectionMap(config, "email")['nome'])
+                "sigla"], data["link"], ConfigSectionMap(config, "email")['nome'])
         altera_config(data, config)
         return True
     else:
@@ -164,8 +162,19 @@ def str2bool(s):
 
 
 def publish_facebook(message):
+    #alterar access_token ao fim de 60 dias https://developers.facebook.com/tools/explorer/730679473758985?method=POST&path=624839094387971%2Ffeed&version=v2.9
+    access_token = ''
+    app_id = ""
+    client_secret = ""
+    link = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=" + \
+        app_id + "&client_secret=" + client_secret + "&fb_exchange_token=" + access_token
+    s = requests.Session()
+    token = s.get(link).content
+    token = token.split("&")[0]
+    print token.split("&")[0]
+    token = token.strip("access_token=")
     r = requests.post("https://graph.facebook.com/v2.9/624839094387971/feed", data={
-                      'access_token': "EAAKYjJJ6YwkBAMhYh3NVsrSRoB72s2UsG3Vy3oTssdXpHvK9Ghjah8ZBogeRkl4xCYMK3F8PE1OJ8g8MwNqoxqyO6vZB87JZB18Sq69iYKJ5sPAl6S9fQhHLNd59U9lKRYGOLG5oymqjZCCZBWEXgCZBpHWypKRjRVqWiZBeeGqZB7ZBicbNpov1tAellSGG5ZC5YZD", 'message': message})
+                      'access_token': json.loads(token)[u"access_token"], 'message': message})
 
 
 def update_add_cadeiras(cadeiras, data, config):
@@ -191,6 +200,7 @@ def update_add_cadeiras(cadeiras, data, config):
 
 if __name__ == "__main__":
     segundos = 3
+    publish_facebook("adsadsdasadsdsdas")
     while 1:
         time.sleep(segundos)
         config = config_init(FICHEIRO_CONFIG)
