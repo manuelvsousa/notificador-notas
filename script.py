@@ -163,18 +163,9 @@ def str2bool(s):
 
 def publish_facebook(message):
     #alterar access_token ao fim de 60 dias https://developers.facebook.com/tools/explorer/730679473758985?method=POST&path=624839094387971%2Ffeed&version=v2.9
-    access_token = ''
-    app_id = ""
-    client_secret = ""
-    link = "https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=" + \
-        app_id + "&client_secret=" + client_secret + "&fb_exchange_token=" + access_token
-    s = requests.Session()
-    token = s.get(link).content
-    token = token.split("&")[0]
-    print token.split("&")[0]
-    token = token.strip("access_token=")
+    access_token = 'EAAKYjJJ6YwkBAHz2QXVJ9spZCiOuz6EMBDopZCti2iks8RnXKGZAvUkPzFrWk31ZCl8nzIlfjkdwq62nS0bEupvZCOssZCjYZAMved7880gnC1CiU5sZArBbIkL16OpxTZAUbRC7CQELXKC2oQGprb9px3P4qDhgE4tcZD'
     r = requests.post("https://graph.facebook.com/v2.9/624839094387971/feed", data={
-                      'access_token': json.loads(token)[u"access_token"], 'message': message})
+                      'access_token': access_token, 'message': message})
 
 
 def update_add_cadeiras(cadeiras, data, config):
@@ -200,7 +191,6 @@ def update_add_cadeiras(cadeiras, data, config):
 
 if __name__ == "__main__":
     segundos = 3
-    publish_facebook("adsadsdasadsdsdas")
     while 1:
         time.sleep(segundos)
         config = config_init(FICHEIRO_CONFIG)
