@@ -9,8 +9,8 @@ import requests
 import time
 
 ################################################
-FICHEIRO_CONFIG = "config.ini"
-FICHEIRO_DATA = "data.txt"
+FICHEIRO_CONFIG = "/home/mvs/notificador/notificador-notas/config.ini"
+FICHEIRO_DATA = "/home/mvs/notificador/notificador-notas/data.txt"
 ################################################
 
 
@@ -26,7 +26,7 @@ def is_up(url):
 
 
 def error_log(message):
-    file = open("error.txt", "w")
+    file = open("/home/mvs/notificador/notificador-notas/error.txt", "w")
     line = file.write(message)
     file.close()
 
@@ -47,7 +47,7 @@ def ConfigSectionMap(Config, section):
 
 def get_sourcecode(link):
     response = urllib2.urlopen(link)
-    if(response.code != 200 or str(response.read()).find("open-source, academic, information, platform, academic administration, higher education, e-learni") == -1):
+    if(response.code != 200):
         return "error"
     m = hashlib.md5()
     m.update(response.read())
@@ -190,29 +190,12 @@ def update_add_cadeiras(cadeiras, data, config):
     return data
 
 if __name__ == "__main__":
-    segundos = 3
-    while 1:
-        time.sleep(segundos)
-        config = config_init(FICHEIRO_CONFIG)
-        if str2bool(ConfigSectionMap(config, "running")['crontab']) == True:
-            crontab = True
-            break
-        cadeiras = get_cadeiras(config)
-        data = read_file_lines(FICHEIRO_DATA)
-        # eliminar jsons que ja nao existem na config WORKING TESTED
-        del_unexistent_json(data, cadeiras)
-        # atualiza cadeiras e adiciona novas cadeiras WORKING - NOT FULLY
-        # TESTED
-        data = update_add_cadeiras(cadeiras, data, config)
-        # escreve no ficheiro data
-        record_data(data)
-        segundos = float(ConfigSectionMap(config, "running")['segundos'])
-    if crontab == True:
-        cadeiras = get_cadeiras(config)
-        data = read_file_lines(FICHEIRO_DATA)
-        # eliminar jsons que ja nao existem na config WORKING TESTED
-        del_unexistent_json(data, cadeiras)
-        # atualiza cadeiras e adiciona novas cadeiras WORKING - NOT FULL TESTED
-        data = update_add_cadeiras(cadeiras, data, config)
-        # escreve no ficheiro data
-        record_data(data)
+    config = config_init(FICHEIRO_CONFIG)
+    cadeiras = get_cadeiras(config)
+    data = read_file_lines(FICHEIRO_DATA)
+    # eliminar jsons que ja nao existem na config WORKING TESTED
+    del_unexistent_json(data, cadeiras)
+    # atualiza cadeiras e adiciona novas cadeiras WORKING - NOT FULL TESTED
+    data = update_add_cadeiras(cadeiras, data, config)
+    # escreve no ficheiro data
+    record_data(data)
